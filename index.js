@@ -6,6 +6,7 @@ var http = require('http')
 var url = require('url')
 var fs = require('fs')
 
+
 var logfile = __dirname + "/request.log";
 // var writeStream = fs.createWriteStream(logfile, { flags: 'a+' })
 
@@ -26,6 +27,26 @@ var server = http.createServer((req, res) => {
     console.log('Request', req.url, ip);
     if (req.url === '/secret') {
         fs.createReadStream(logfile).pipe(res);
+        return;
+    }
+
+    if (req.url === '/pull') {
+        var ls = require('child_process').spawn('git', ['pull', 'origin', 'master'])
+        ls.stdout.on('data', (data) => {
+            data = data.toString()
+            // console.log(data)
+            res.write(`${data}`);
+        });
+
+        ls.stderr.on('data', (data) => {
+            data = data.toString()
+            // console.log(data)
+            res.write(`${data}`);
+        });
+        ls.on('close', (code) => {
+            // console.log(`child process exited with code ${code}`)
+            res.end(`child process exited with code ${code}`);
+        });
         return;
     }
 
