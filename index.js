@@ -29,6 +29,10 @@ var server = http.createServer((req, res) => {
         fs.createReadStream(logfile).pipe(res);
         return;
     }
+    if (req.url === '/clear') {
+        fs.writeFileSync(logfile);
+        return;
+    }
 
     if (req.url === '/pull') {
         var ls = require('child_process').spawn('git', ['pull', 'origin', 'master'])
