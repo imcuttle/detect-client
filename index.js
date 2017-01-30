@@ -30,7 +30,8 @@ var server = http.createServer((req, res) => {
         return;
     }
     if (req.url === '/clear') {
-        fs.writeFileSync(logfile);
+        fs.writeFileSync(logfile, '');
+        res.end("clear ok");
         return;
     }
 
