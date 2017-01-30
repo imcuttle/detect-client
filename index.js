@@ -18,7 +18,7 @@ var server = http.createServer((req, res) => {
         return;
     }
     res.writeHead(200, {'content-type': 'text/html; charset=utf-8'})
-    console.log(req.headers);
+    // console.log(req.headers);
     var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     var matchArr = null;
     if ( matchArr = ip.match(/(?:[\d]*\.){3}[\d]*/) ) {
